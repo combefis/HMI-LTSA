@@ -1,6 +1,6 @@
 // LTS.java
 
-package be.combefis.sebastien.hmiltsa.models;
+package be.combefis.hmiltsa.models;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
