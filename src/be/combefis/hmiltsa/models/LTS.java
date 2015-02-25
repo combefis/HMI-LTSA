@@ -105,10 +105,36 @@ public class LTS<S,T>
 	 * 
 	 * @pre "t", "from", "to" != null
 	 *      "from" and "to" are states from this LTS
+	 *      "t" is not a transition of this LTS 
 	 * @post A transition has been added to this LTS, with "from" as source state 
 	 *       and "to" as destination state
 	 */
 	public void addTransition (T t, S from, S to)
+	{
+		addTransition (t, from, to, false);
+	}
+	
+	/**
+	 * Adds a tau transition to the LTS
+	 * 
+	 * @pre "t", "from", "to" != null
+	 *      "from" and "to" are states from this LTS
+	 *      "t" is not a transition of this LTS
+	 * @post A tau transition has been added to this LTS, with "from" as source state 
+	 *       and "to" as destination state
+	 */
+	public void addTauTransition (T t, S from, S to)
+	{
+		addTransition (t, from, to, true);
+	}
+	
+	/**
+	 * Adds a transition to the LTS
+	 * 
+	 * @pre t != null
+	 * @post The specified transition has been added to this LTS
+	 */
+	private void addTransition (T t, S from, S to, boolean tau)
 	{
 		if (t == null)
 		{
@@ -119,39 +145,22 @@ public class LTS<S,T>
 			throw new InvalidParameterException ("The two specified states do not both belongs to this LTS");
 		}
 		
-		addTransition (new Transition<S,T> (t, statesMap.get (from), statesMap.get (to)));
-	}
-	
-	/**
-	 * Adds a tau transition to the LTS
-	 * 
-	 * @pre "t", "from", "to" != null
-	 *      "from" and "to" are states from this LTS
-	 *      There is no tau transition between "from" and "to"
-	 * @post A tau transition has been added to this LTS, with "from" as source state 
-	 *       and "to" as destination state
-	 */
-	public void addTauTransition (S from, S to)
-	{
-		if (! (statesMap.containsKey (from) && statesMap.containsKey (to)))
+		State<S,T> fromState = statesMap.get (from);
+		State<S,T> toState = statesMap.get (to);
+		Transition<S,T> newTransition;
+		if (tau)
 		{
-			throw new InvalidParameterException ("The two specified states do not both belongs to this LTS");
+			newTransition = new TauTransition<S,T> (fromState, toState);
+		}
+		else
+		{
+			newTransition = new Transition<S,T> (t, fromState, toState);
 		}
 		
-		addTransition (new TauTransition<S,T> (statesMap.get (from), statesMap.get (to)));
-	}
-	
-	/**
-	 * Adds a transition to the LTS
-	 * 
-	 * @pre t != null
-	 * @post The specified transition has been added to this LTS
-	 */
-	private void addTransition (Transition<S,T> t)
-	{
-		transitions.add (t);
-		t.from.addOutTransition (t);
-		t.to.addInTransition (t);
+		transitions.add (newTransition);
+		fromState.addOutTransition (newTransition);
+		toState.addInTransition (newTransition);
+		transitionsMap.put (t, newTransition);
 	}
 	
 	/**
