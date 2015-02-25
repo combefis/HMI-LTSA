@@ -40,6 +40,8 @@ public class LTS<S,T>
 		statesMap = new HashMap<S,State<S,T>>();
 		transitionsMap = new HashMap<T,Transition<S,T>>();
 		taus = new HashSet<TauTransition<S,T>>();
+		
+		addState (s);
 	}
 	
 	/**
