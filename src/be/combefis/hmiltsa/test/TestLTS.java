@@ -22,31 +22,90 @@ public class TestLTS
 	@Before
 	public void setUp() throws Exception
 	{
-		lts = new LTS<String, String> ("Start");
+		lts = new LTS<String, String> ("A");
 	}
 
 	@Test
 	public void testInitialState()
 	{
-		assertEquals ("Start", lts.initialState());
+		// The initial state must be A
+		assertEquals ("A", lts.initialState());
+		
+		// Adding a state must not change the initial state 
+		lts.addState ("B");
+		assertEquals ("A", lts.initialState());
 	}
 
 	@Test
 	public void testStatesCount()
 	{
+		// There is only one state (the initial state)
 		assertEquals (1, lts.statesCount());
 		
-		lts.addState ("1");
+		// Adding one state (now two states)
+		lts.addState ("B");
 		assertEquals (2, lts.statesCount());
 		
-		lts.addState ("3");
-		lts.addState ("4");
+		// Adding two more states (now four states)
+		lts.addState ("C");
+		lts.addState ("D");
 		assertEquals (4, lts.statesCount());
 	}
 
 	@Test
 	public void testTransitionsCount()
 	{
+		// There is no transition initially
 		assertEquals (0, lts.transitionsCount());
+		
+		// Adding one transition (now one transition)
+		lts.addState ("B");
+		lts.addTransition ("T1", "A", "B");
+		assertEquals (1, lts.transitionsCount());
+		
+		// Adding one tau transition (now two transitions)
+		lts.addTauTransition ("T2", "A", "B");
+		assertEquals (2, lts.transitionsCount());
+		
+		// Adding three more transitions (now five transitions)
+		lts.addState ("C");
+		lts.addState ("D");
+		lts.addTransition ("T3", "C", "D");
+		lts.addTauTransition ("T4", "A", "C");
+		lts.addTauTransition ("T5", "D", "B");
+		assertEquals (5, lts.transitionsCount());
+	}
+	
+	@Test
+	public void testAddState()
+	{
+		assertEquals (1, lts.statesCount());
+		
+		// Adding one state
+		lts.addState ("B");
+		assertEquals (2, lts.statesCount());
+		
+		// Adding two more states (now four states)
+		lts.addState ("C");
+		lts.addState ("D");
+		assertEquals (4, lts.statesCount());
+		
+		// Adding again the initial state (still four states)
+		try
+		{
+			lts.addState ("A");
+			fail();
+		}
+		catch (IllegalArgumentException exception){}
+		assertEquals (4, lts.statesCount());
+		
+		// Adding an existing state (still four states)
+		try
+		{
+			lts.addState ("C");
+			fail();
+		}
+		catch (IllegalArgumentException exception){}
+		assertEquals (4, lts.statesCount());
 	}
 }
