@@ -106,7 +106,7 @@ public class LTS<S,T>
 	 * @pre "t", "from", "to" != null
 	 *      "from" and "to" are states from this LTS
 	 *      "t" is not a transition of this LTS 
-	 * @post A transition has been added to this LTS, with "from" as source state 
+	 * @post A transition with "t" has been added to this LTS, with "from" as source state 
 	 *       and "to" as destination state
 	 */
 	public void addTransition (T t, S from, S to)
@@ -120,7 +120,8 @@ public class LTS<S,T>
 	 * @pre "t", "from", "to" != null
 	 *      "from" and "to" are states from this LTS
 	 *      "t" is not a transition of this LTS
-	 * @post A tau transition has been added to this LTS, with "from" as source state 
+	 *      there is no tau transition between "from" and "to" yet
+	 * @post A tau transition with "t" has been added to this LTS, with "from" as source state 
 	 *       and "to" as destination state
 	 */
 	public void addTauTransition (T t, S from, S to)
@@ -131,8 +132,13 @@ public class LTS<S,T>
 	/**
 	 * Adds a transition to the LTS
 	 * 
-	 * @pre t != null
-	 * @post The specified transition has been added to this LTS
+	 * @pre "t", "from", "to" != null
+	 *      "from" and "to" are states from this LTS
+	 *      "t" is not a transition of this LTS
+	 *      if "tau" is true, there cannot be a tau transition between "from" and "to"
+	 * @post A transition with "t" has been added to this LTS, with "from" as source state
+	 *       and "to" as destination state
+	 *       if "tau" is true, the added transition is a tau transition
 	 */
 	private void addTransition (T t, S from, S to, boolean tau)
 	{
@@ -143,6 +149,14 @@ public class LTS<S,T>
 		if (! (statesMap.containsKey (from) && statesMap.containsKey (to)))
 		{
 			throw new InvalidParameterException ("The two specified states do not both belongs to this LTS");
+		}
+		if (transitionsMap.containsKey (t))
+		{
+			throw new InvalidParameterException ("The specified transition (" + t + ") already belongs to this LTS");
+		}
+		if (tau && hasTauTransition (from, to))
+		{
+			throw new InvalidParameterException ("There is already a tau transition between the two specified states in this LTS");
 		}
 		
 		State<S,T> fromState = statesMap.get (from);
@@ -161,6 +175,26 @@ public class LTS<S,T>
 		fromState.addOutTransition (newTransition);
 		toState.addInTransition (newTransition);
 		transitionsMap.put (t, newTransition);
+	}
+	
+	/**
+	 * Tests whether there exists a tau transition between two states
+	 * 
+	 * @pre "from", "to" != null
+	 *      "from" and "to" are states from this LTS
+	 * @post The returned value contains true if there is a tau transition
+	 *       with "from" as source state and "to" as destination state in this LTS
+	 */
+	public boolean hasTauTransition (S from, S to)
+	{
+		for (Transition<S,T> s : statesMap.get (from).out)
+		{
+			if (s instanceof TauTransition && s.to.state.equals (to))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

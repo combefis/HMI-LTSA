@@ -108,4 +108,48 @@ public class TestLTS
 		catch (IllegalArgumentException exception){}
 		assertEquals (4, lts.statesCount());
 	}
+	
+	@Test
+	public void testAddTransition()
+	{
+		assertEquals (0, lts.transitionsCount());
+		lts.addState ("B");
+		lts.addState ("C");
+		
+		// Adding one transition
+		lts.addTransition ("T1", "A", "B");
+		assertEquals (1, lts.transitionsCount());
+		
+		// Adding one tau transition (now two transitions)
+		lts.addTauTransition ("T2", "A", "C");
+		assertEquals (2, lts.transitionsCount());
+		
+		// Adding loops (now four transitions)
+		lts.addTauTransition ("T3", "A", "A");
+		lts.addTransition ("T4", "A", "A");
+		assertEquals (4, lts.transitionsCount());
+		
+		// Adding two more transitions (now six transitions)
+		lts.addTransition ("T5", "C", "A");
+		lts.addTransition ("T6", "C", "B");
+		assertEquals (6, lts.transitionsCount());
+		
+		// Adding an existing transition (still six transitions)
+		try
+		{
+			lts.addTransition ("T1", "C", "A");
+			fail();
+		}
+		catch (IllegalArgumentException exception){}
+		assertEquals (6, lts.transitionsCount());
+		
+		// Adding a second tau transition between the two same states (still six transitions)
+		try
+		{
+			lts.addTauTransition ("T7", "A", "C");
+			fail();
+		}
+		catch (IllegalArgumentException exception){}
+		assertEquals (6, lts.transitionsCount());
+	}
 }
