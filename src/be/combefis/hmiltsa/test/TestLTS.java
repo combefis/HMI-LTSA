@@ -173,4 +173,30 @@ public class TestLTS
 		catch (IllegalArgumentException exception){}
 		assertEquals (4, lts.transitionsCount());
 	}
+	
+	@Test
+	public void testHasTauTransition()
+	{
+		assertFalse (lts.hasTauTransition ("S0", "S0"));
+		lts.addState ("S1");
+		lts.addState ("S2");
+		
+		assertFalse (lts.hasTauTransition ("S0", "S1"));
+		assertFalse (lts.hasTauTransition ("S0", "S2"));
+		assertFalse (lts.hasTauTransition ("S1", "S0"));
+		assertFalse (lts.hasTauTransition ("S1", "S1"));
+		assertFalse (lts.hasTauTransition ("S1", "S2"));
+		assertFalse (lts.hasTauTransition ("S2", "S0"));
+		assertFalse (lts.hasTauTransition ("S2", "S1"));
+		assertFalse (lts.hasTauTransition ("S2", "S2"));
+		
+		lts.addTauTransition ("T1", "S0", "S0");
+		assertTrue (lts.hasTauTransition ("S0", "S0"));
+		
+		lts.addTransition ("T2", "S0", "S1");
+		assertFalse (lts.hasTauTransition ("S0", "S1"));
+		
+		lts.addTauTransition ("T3", "S0", "S1");
+		assertTrue (lts.hasTauTransition ("S0", "S1"));
+	}
 }
