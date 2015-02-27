@@ -24,7 +24,6 @@ public class LTS<S,T>
 	private final Set<Transition<S,T>> transitions;
 	private final Map<S,State<S,T>> statesMap;
 	private final Map<T,Transition<S,T>> transitionsMap;
-	private final Set<TauTransition<S,T>> taus;
 	
 	/**
 	 * Creates a new empty LTS
@@ -39,7 +38,6 @@ public class LTS<S,T>
 		transitions = new HashSet<Transition<S,T>>();
 		statesMap = new HashMap<S,State<S,T>>();
 		transitionsMap = new HashMap<T,Transition<S,T>>();
-		taus = new HashSet<TauTransition<S,T>>();
 		
 		addState (s);
 	}
