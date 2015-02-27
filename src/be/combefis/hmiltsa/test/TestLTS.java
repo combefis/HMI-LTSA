@@ -22,18 +22,18 @@ public class TestLTS
 	@Before
 	public void setUp() throws Exception
 	{
-		lts = new LTS<String, String> ("A");
+		lts = new LTS<String, String> ("S0");
 	}
 
 	@Test
 	public void testInitialState()
 	{
 		// The initial state must be A
-		assertEquals ("A", lts.initialState());
+		assertEquals ("S0", lts.initialState());
 		
 		// Adding a state must not change the initial state 
-		lts.addState ("B");
-		assertEquals ("A", lts.initialState());
+		lts.addState ("S1");
+		assertEquals ("S0", lts.initialState());
 	}
 
 	@Test
@@ -43,12 +43,12 @@ public class TestLTS
 		assertEquals (1, lts.statesCount());
 		
 		// Adding one state (now two states)
-		lts.addState ("B");
+		lts.addState ("S1");
 		assertEquals (2, lts.statesCount());
 		
 		// Adding two more states (now four states)
-		lts.addState ("C");
-		lts.addState ("D");
+		lts.addState ("S2");
+		lts.addState ("S3");
 		assertEquals (4, lts.statesCount());
 	}
 
@@ -59,20 +59,20 @@ public class TestLTS
 		assertEquals (0, lts.transitionsCount());
 		
 		// Adding one transition (now one transition)
-		lts.addState ("B");
-		lts.addTransition ("T1", "A", "B");
+		lts.addState ("S1");
+		lts.addTransition ("T1", "S0", "S1");
 		assertEquals (1, lts.transitionsCount());
 		
 		// Adding one tau transition (now two transitions)
-		lts.addTauTransition ("T2", "A", "B");
+		lts.addTauTransition ("T2", "S0", "S1");
 		assertEquals (2, lts.transitionsCount());
 		
 		// Adding three more transitions (now five transitions)
-		lts.addState ("C");
-		lts.addState ("D");
-		lts.addTransition ("T3", "C", "D");
-		lts.addTauTransition ("T4", "A", "C");
-		lts.addTauTransition ("T5", "D", "B");
+		lts.addState ("S2");
+		lts.addState ("S3");
+		lts.addTransition ("T3", "S2", "S3");
+		lts.addTauTransition ("T4", "S0", "S2");
+		lts.addTauTransition ("T5", "S3", "S1");
 		assertEquals (5, lts.transitionsCount());
 	}
 	
@@ -82,18 +82,18 @@ public class TestLTS
 		assertEquals (1, lts.statesCount());
 		
 		// Adding one state
-		lts.addState ("B");
+		lts.addState ("S1");
 		assertEquals (2, lts.statesCount());
 		
 		// Adding two more states (now four states)
-		lts.addState ("C");
-		lts.addState ("D");
+		lts.addState ("S2");
+		lts.addState ("S3");
 		assertEquals (4, lts.statesCount());
 		
 		// Adding again the initial state (still four states)
 		try
 		{
-			lts.addState ("A");
+			lts.addState ("S0");
 			fail();
 		}
 		catch (IllegalArgumentException exception){}
@@ -102,7 +102,7 @@ public class TestLTS
 		// Adding an existing state (still four states)
 		try
 		{
-			lts.addState ("C");
+			lts.addState ("S2");
 			fail();
 		}
 		catch (IllegalArgumentException exception){}
@@ -113,27 +113,27 @@ public class TestLTS
 	public void testAddTransition()
 	{
 		assertEquals (0, lts.transitionsCount());
-		lts.addState ("B");
-		lts.addState ("C");
+		lts.addState ("S1");
+		lts.addState ("S2");
 		
 		// Adding one transition
-		lts.addTransition ("T1", "A", "B");
+		lts.addTransition ("T1", "S0", "S1");
 		assertEquals (1, lts.transitionsCount());
 		
 		// Adding one loop (now two transitions)
-		lts.addTransition ("T2", "A", "A");
+		lts.addTransition ("T2", "S0", "S0");
 		assertEquals (2, lts.transitionsCount());
 		
 		// Adding three more transitions (now five transitions)
-		lts.addTransition ("T3", "C", "A");
-		lts.addTransition ("T4", "C", "B");
-		lts.addTransition ("T5", "A", "B");
+		lts.addTransition ("T3", "S2", "S0");
+		lts.addTransition ("T4", "S2", "S1");
+		lts.addTransition ("T5", "S0", "S1");
 		assertEquals (5, lts.transitionsCount());
 		
 		// Adding an existing transition (still five transitions)
 		try
 		{
-			lts.addTransition ("T1", "C", "A");
+			lts.addTransition ("T1", "S2", "S0");
 			fail();
 		}
 		catch (IllegalArgumentException exception){}
@@ -144,30 +144,30 @@ public class TestLTS
 	public void testAddTauTransition()
 	{
 		assertEquals (0, lts.transitionsCount());
-		lts.addState ("B");
-		lts.addState ("C");
+		lts.addState ("S1");
+		lts.addState ("S2");
 		
 		// Adding one tau transition
-		lts.addTauTransition ("T1", "A", "C");
+		lts.addTauTransition ("T1", "S0", "S2");
 		assertEquals (1, lts.transitionsCount());
-		assertTrue (lts.hasTauTransition ("A", "C"));
+		assertTrue (lts.hasTauTransition ("S0", "S2"));
 		
 		// Adding one loop (now two transitions)
-		lts.addTauTransition ("T2", "A", "A");
+		lts.addTauTransition ("T2", "S0", "S0");
 		assertEquals (2, lts.transitionsCount());
-		assertTrue (lts.hasTauTransition ("A", "A"));
+		assertTrue (lts.hasTauTransition ("S0", "S0"));
 		
 		// Adding two more tau transitions (now four transitions)
-		lts.addTauTransition ("T3", "C", "A");
-		lts.addTauTransition ("T4", "C", "B");
+		lts.addTauTransition ("T3", "S2", "S0");
+		lts.addTauTransition ("T4", "S2", "S1");
 		assertEquals (4, lts.transitionsCount());
-		assertTrue (lts.hasTauTransition ("C", "A"));
-		assertTrue (lts.hasTauTransition ("C", "B"));
+		assertTrue (lts.hasTauTransition ("S2", "S0"));
+		assertTrue (lts.hasTauTransition ("S2", "S1"));
 		
 		// Adding a second tau transition between the two same states (still four transitions)
 		try
 		{
-			lts.addTauTransition ("T5", "A", "C");
+			lts.addTauTransition ("T5", "S0", "S2");
 			fail();
 		}
 		catch (IllegalArgumentException exception){}
