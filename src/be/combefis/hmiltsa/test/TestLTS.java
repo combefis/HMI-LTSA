@@ -15,8 +15,9 @@ import be.combefis.hmiltsa.models.LTS;
  * @author Sébastien Combéfis
  * @version February 25, 2015
  */
-public class TestLTS
+public final class TestLTS
 {
+	// Instance variables
 	private LTS<String,String> lts;
 	
 	@Before
