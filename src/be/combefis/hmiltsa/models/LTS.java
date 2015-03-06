@@ -14,7 +14,7 @@ import java.util.Set;
  * - T labels the transitions
  * 
  * @author Sébastien Combéfis
- * @version February 24, 2015
+ * @version March 5, 2015
  */
 public class LTS<S,T>
 {
@@ -26,7 +26,7 @@ public class LTS<S,T>
 	private final Map<T,Transition<S,T>> transitionsMap;
 	
 	/**
-	 * Creates a new empty LTS
+	 * Creates a new LTS with one state
 	 * 
 	 * @pre s != null
 	 * @post A new instance of this is created, representing an empty LTS
@@ -48,7 +48,7 @@ public class LTS<S,T>
 	 * @pre -
 	 * @post The returned value contains the initial state of this LTS
 	 */
-	public S initialState()
+	public final S initialState()
 	{
 		return initialState;
 	}
@@ -59,7 +59,7 @@ public class LTS<S,T>
 	 * @pre -
 	 * @post The returned value contains the number of states of this LTS
 	 */
-	public int statesCount()
+	public final int statesCount()
 	{
 		return states.size();
 	}
@@ -70,7 +70,7 @@ public class LTS<S,T>
 	 * @pre -
 	 * @post The returned value contains the number of transitions of this LTS
 	 */
-	public int transitionsCount()
+	public final int transitionsCount()
 	{
 		return transitions.size();
 	}
@@ -82,7 +82,7 @@ public class LTS<S,T>
 	 *      "s" is not a state of this LTS
 	 * @post The specified state "s" has been added to this LTS
 	 */
-	public void addState (S s)
+	public final void addState (S s)
 	{
 		if (s == null)
 		{
@@ -99,6 +99,15 @@ public class LTS<S,T>
 	}
 	
 	/**
+	 * Hook to handle a state that has been added to the LTS
+	 * 
+	 * @pre "s" != null
+	 *      "s" belongs to this LTS
+	 * @post The state "s" that has been added to this LTS has been handled
+	 */
+	public void handleState (S s){}
+	
+	/**
 	 * Adds a transition to the LTS
 	 * 
 	 * @pre "t", "from", "to" != null
@@ -107,7 +116,7 @@ public class LTS<S,T>
 	 * @post A transition with "t" has been added to this LTS, with "from" as source state 
 	 *       and "to" as destination state
 	 */
-	public void addTransition (T t, S from, S to)
+	public final void addTransition (T t, S from, S to)
 	{
 		addTransition (t, from, to, false);
 	}
@@ -122,7 +131,7 @@ public class LTS<S,T>
 	 * @post A tau transition with "t" has been added to this LTS, with "from" as source state 
 	 *       and "to" as destination state
 	 */
-	public void addTauTransition (T t, S from, S to)
+	public final void addTauTransition (T t, S from, S to)
 	{
 		addTransition (t, from, to, true);
 	}
@@ -138,7 +147,7 @@ public class LTS<S,T>
 	 *       and "to" as destination state
 	 *       if "tau" is true, the added transition is a tau transition
 	 */
-	private void addTransition (T t, S from, S to, boolean tau)
+	private final void addTransition (T t, S from, S to, boolean tau)
 	{
 		if (t == null)
 		{
@@ -176,6 +185,15 @@ public class LTS<S,T>
 	}
 	
 	/**
+	 * Hook to handle a transition that has been added to the LTS
+	 * 
+	 * @pre "t" != null
+	 *      "t" belongs to this LTS
+	 * @post The transition "t" that has been added to this LTS has been handled
+	 */
+	public void handleTransition (T t){}
+	
+	/**
 	 * Tests whether there exists a tau transition between two states
 	 * 
 	 * @pre "from", "to" != null
@@ -183,7 +201,7 @@ public class LTS<S,T>
 	 * @post The returned value contains true if there is a tau transition
 	 *       with "from" as source state and "to" as destination state in this LTS
 	 */
-	public boolean hasTauTransition (S from, S to)
+	public final boolean hasTauTransition (S from, S to)
 	{
 		for (Transition<S,T> s : statesMap.get (from).out)
 		{
