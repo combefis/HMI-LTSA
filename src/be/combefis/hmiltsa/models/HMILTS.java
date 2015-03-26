@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Human-Machine Interaction Labelled Transition System (HMI-LTS)
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version March 5, 2015
  */
 public final class HMILTS extends LTS<State,Transition>

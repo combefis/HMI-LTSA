@@ -7,7 +7,7 @@ import be.combefis.hmiltsa.models.HMILTS;
 /**
  * Algorithm to check the full-control property
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version March 8, 2015
  */
 public final class FCCheck

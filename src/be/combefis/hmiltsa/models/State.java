@@ -5,7 +5,7 @@ package be.combefis.hmiltsa.models;
 /**
  * State of an HMI-LTS
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version February 27, 2015
  */
 public final class State

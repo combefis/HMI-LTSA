@@ -13,7 +13,7 @@ import java.util.Set;
  * - S labels the states
  * - T labels the transitions
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version March 5, 2015
  */
 public class LTS<S,T>

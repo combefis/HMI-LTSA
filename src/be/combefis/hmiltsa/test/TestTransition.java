@@ -14,7 +14,7 @@ import be.combefis.hmiltsa.models.Transition;
 /**
  * Test class of the Transition class
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version March 2, 2015
  */
 public final class TestTransition

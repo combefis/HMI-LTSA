@@ -12,7 +12,7 @@ import be.combefis.hmiltsa.models.LTS;
 /**
  * Test class of the LTS class
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version February 25, 2015
  */
 public final class TestLTS

@@ -13,7 +13,7 @@ import be.combefis.hmiltsa.models.ActionType;
 /**
  * Test class of the Action class
  * 
- * @author Sébastien Combéfis
+ * @author SÃ©bastien CombÃ©fis
  * @version March 3, 2015
  */
 public final class TestAction

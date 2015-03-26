@@ -5,7 +5,7 @@ package be.combefis.hmiltsa.models;
 /**
  * Action that is used to label the transitions of an HMI-LTS
  * 
- *  @author Sébastien Combéfis
+ *  @author SÃ©bastien CombÃ©fis
  *  @version February 28, 2015
  */
 public final class Action
