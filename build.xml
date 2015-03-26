@@ -1,0 +1,20 @@
+<project name="HMI-LTSA">
+	<target name="test">
+		<delete dir="bin" />
+		<mkdir dir="bin" />
+		<javac includeantruntime="false" srcdir="src" destdir="bin" classpath="lib/junit.jar" />
+		
+		<junit printsummary="on" showoutput="true">
+			<classpath>
+				<pathelement location="bin" />
+				<pathelement location="lib/junit.jar" />
+				<pathelement location="lib/org.hamcrest.core_1.3.0.v201303031735.jar" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<test name="be.combefis.hmiltsa.test.TestAction" />
+			<test name="be.combefis.hmiltsa.test.TestLTS" />
+			<test name="be.combefis.hmiltsa.test.TestState" />
+			<test name="be.combefis.hmiltsa.test.TestTransition" />
+		</junit>
+	</target>
+</project>
